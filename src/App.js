@@ -1,10 +1,12 @@
 import "./App.css";
 import Chart from "./Chart";
+import DashBoard from "./DashBoard";
 
 function App() {
   return (
     <div className="App">
-      <Chart />
+      <DashBoard></DashBoard>
+      {/* <Chart /> */}
     </div>
   );
 }
