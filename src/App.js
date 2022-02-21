@@ -1,12 +1,11 @@
-import "./App.css";
-import Chart from "./Chart";
-import DashBoard from "./DashBoard";
+import './App.css';
+import Chart from './Chart';
+import DashBoard from './DashBoard';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <DashBoard></DashBoard>
-      {/* <Chart /> */}
     </div>
   );
 }

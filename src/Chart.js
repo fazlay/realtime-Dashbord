@@ -1,36 +1,107 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-// const url = "https://immense-sierra-60249.herokuapp.com";
-const url = 'http://localhost:5000/';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
+import './App.css';
+const url = 'https://immense-sierra-60249.herokuapp.com';
+// const url = 'http://localhost:5000/';
 
+const data = [
+  {
+    name: 'Page A',
+    uv: 4000,
+  },
+  {
+    name: 'Page B',
+    uv: 3000,
+  },
+  {
+    name: 'Page C',
+    uv: 2000,
+  },
+  {
+    name: 'Page D',
+    uv: 2780,
+  },
+  {
+    name: 'Page E',
+    uv: 1890,
+  },
+  {
+    name: 'Page F',
+    uv: 2390,
+  },
+  {
+    name: 'Page G',
+    uv: 3490,
+  },
+];
 const socket = io(url, {
   transports: ['websocket', 'polling'],
 });
 
-// NIFTY50: 8094.7,
-// MARUTI: 8593.65,
-// AXISBANK: 799.55,
-// SBIN: 540.1,
-// " INDUSINDBK": 958.35,
-
 const Chart = () => {
-  const [datas, setDatas] = useState([]);
+  const [datas, setDatas] = useState([
+    { name: `${new Date().getSeconds()}`, uv: 0 },
+  ]);
+
+  // let obj = [{ time: `${new Date().getSeconds()}`, MarketPrice: 0 }];
+
+  // { time: `${new Date().getSeconds()}`, MarketPrice: 0 },
+  //{
+  //  time: `${new Date().getSeconds()}`,
+  //  MarketPrice: stockPrice.regularMarketPrice,
+  //}
+
   useEffect(() => {
     socket.on('symbol', (stockPrice) => {
       console.log(stockPrice);
+      // let newPrice = {
+      //   name: `${new Date().getSeconds()}`,
+      //   uv: parseInt(stockPrice.regularMarketPrice),
+      // };
+
+      // chartData.push(newPrice);
+
       setDatas(stockPrice);
     });
   }, []);
-  const keys = Object.values(datas);
+
+  // const keys = Object.values(datas);
 
   return (
     <div>
-      <h1>This is the stock Current Price </h1>
-      {Object.entries(datas).map((element) => (
+      <LineChart
+        width={500}
+        height={300}
+        data={datas}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis dataKey='name' />
+        <YAxis type='number' domain={['dataMin-2', 'dataMax+2']} dataKey='uv' />
+        <Tooltip />
+        <Legend />
+
+        <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
+      </LineChart>
+      {/* {Object.entries(datas).map((element) => (
         <h1>
           {element[0]}--{element[1]}
         </h1>
-      ))}
+      ))} */}
     </div>
   );
 };
