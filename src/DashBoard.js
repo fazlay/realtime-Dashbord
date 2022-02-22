@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from './Chart';
 import BtcBarChart from './BtcBarChart.js';
 import Topdesignbar from './TopDesignBar';
+import io from 'socket.io-client';
+const url = 'https://immense-sierra-60249.herokuapp.com';
+// const url = 'http://localhost:5000/';
 
+const socket = io(url, {
+  transports: ['websocket', 'polling'],
+});
 const DashBoard = () => {
+  const [datas, setDatas] = useState([
+    { name: `${new Date().getSeconds()}`, uv: 0 },
+  ]);
+
+  useEffect(() => {
+    socket.on('symbol', (stockPrice) => {
+      console.log(stockPrice);
+
+      setDatas(stockPrice);
+    });
+  }, []);
   return (
     <>
       <div className='bg-gray-200 top-0 py-2 '>DashBoard</div>
@@ -104,8 +121,8 @@ const DashBoard = () => {
 
       {/* -----------------------------CHARTS------------------------- */}
       <div className='flex justify-center '>
-        <Chart></Chart>
-        <BtcBarChart></BtcBarChart>
+        <Chart datas={datas}></Chart>
+        <BtcBarChart datas={datas}></BtcBarChart>
       </div>
     </>
   );

@@ -41,12 +41,12 @@ const data = [
   },
 ];
 
-const BtcBarChart = () => {
+const BtcBarChart = (props) => {
   return (
     <BarChart
       width={500}
       height={300}
-      data={data}
+      data={props.datas}
       margin={{
         top: 5,
         right: 30,
@@ -56,7 +56,7 @@ const BtcBarChart = () => {
     >
       <CartesianGrid strokeDasharray='3 3' />
       <XAxis dataKey='name' />
-      <YAxis />
+      <YAxis type='number' domain={['dataMin-2', 'dataMax+2']} />
       <Tooltip />
       <Legend />
 
